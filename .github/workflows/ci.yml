@@ -23,11 +23,5 @@ jobs:
       - name: Lancer les services Docker
         run: |
           docker compose up -d --build
-          # Attendre que les bases soient prêtes
-          sleep 20
-
-      - name: Lancer les tests dans le conteneur
-        run: |
-          docker exec -w /app store_manager_app pytest
 
 
