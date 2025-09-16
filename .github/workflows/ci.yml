@@ -28,6 +28,6 @@ jobs:
 
       - name: Lancer les tests dans le conteneur
         run: |
-          docker exec -i store_manager_app pytest
+          docker exec -w /app store_manager_app pytest
 
 
