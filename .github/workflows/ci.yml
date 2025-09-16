@@ -10,13 +10,6 @@ jobs:
       - name: Checkout dépôt
         uses: actions/checkout@v3
 
-      # Fixer les permissions et nettoyer les fichiers compilés
-      - name: Clean Python cache and fix permissions
-        run: |
-          chmod -R u+w .
-          find . -type d -name "__pycache__" -exec rm -rf {} +
-          find . -type f -name "*.pyc" -delete
-
       - name: Créer fichier .env
         run: |
           echo "DB_HOST=mysql" >> .env
