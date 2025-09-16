@@ -13,6 +13,7 @@ jobs:
       - name: Créer fichier .env
         run: |
           echo "DB_HOST=mysql" >> .env
+          echo "MONGODB_HOST=mongo" >> .env
           echo "DB_NAME=mydb" >> .env
           echo "DB_USERNAME=user" >> .env
           echo "DB_PASSWORD=pass" >> .env
@@ -24,12 +25,6 @@ jobs:
           docker compose up -d --build
           # Attendre que les bases soient prêtes
           sleep 20
-
-      - name: Installer les dépendances Python (dans le conteneur)
-        run: |
-          docker exec -i store_manager_app pip install --upgrade pip
-          docker exec -i store_manager_app pip install -r requirements.txt
-          docker exec -i store_manager_app pip install pytest
 
       - name: Lancer les tests
         run: |
