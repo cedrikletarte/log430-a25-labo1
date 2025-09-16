@@ -21,7 +21,7 @@ jobs:
 
       - name: Lancer les services Docker
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
           # Attendre que les bases soient prêtes
           sleep 20
 
