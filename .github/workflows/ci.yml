@@ -10,6 +10,11 @@ jobs:
       - name: Checkout dépôt
         uses: actions/checkout@v3
 
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
       - name: Créer fichier .env
         run: |
           echo "DB_HOST=mysql" >> .env
@@ -20,13 +25,31 @@ jobs:
           echo "MONGO_INITDB_ROOT_USERNAME=user" >> .env
           echo "MONGO_INITDB_ROOT_PASSWORD=pass" >> .env
 
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
       - name: Lancer les services Docker
         run: |
           docker compose up -d --build
-          # Attendre que les bases soient prêtes
-          sleep 20
+
+      - name: Vérifier que MySQL est prêt
+        run: |
+          until docker exec store_manager_app mysqladmin ping -h"$DB_HOST" --silent; do
+            echo "Attente que MySQL soit prêt..."
+            sleep 1
+          done
+
+      - name: Vérifier que MongoDB est prêt
+        run: |
+          until docker exec store_manager_app mongo --eval "db.adminCommand('ping')" --quiet; do
+            echo "Attente que MongoDB soit prêt..."
+            sleep 1
+          done
 
       - name: Lancer les tests avec PYTHONPATH
         run: |
-          docker exec -i -w /app store_manager_app bash -c "export PYTHONPATH=/app/src && pytest src/tests"
-
+          export PYTHONPATH=src
+          pytest src/tests
