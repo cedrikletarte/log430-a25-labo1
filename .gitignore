@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+laboratory-report.md
+laboratory-report.pdf
+
 # Distribution / packaging
 .env
 .Python
