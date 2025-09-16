@@ -26,6 +26,6 @@ jobs:
           # Attendre que les bases soient prêtes
           sleep 20
 
-      - name: Lancer les tests
+      - name: Lancer les tests avec PYTHONPATH
         run: |
-          docker exec -i store_manager_app pytest
+          docker exec -i store_manager_app bash -c "export PYTHONPATH=/app/src && pytest /app/src/tests"
