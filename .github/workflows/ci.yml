@@ -7,13 +7,6 @@ jobs:
     runs-on: self-hosted  # Utilisation du runner self-hosted
 
     steps:
-      # 🔹 Fixer les permissions et nettoyer les caches Python avant checkout
-      - name: Fix permissions and clean cache
-        run: |
-          chmod -R u+w .
-          find . -type d -name "__pycache__" -exec rm -rf {} +
-          find . -type f -name "*.pyc" -delete
-
       - name: Checkout dépôt
         uses: actions/checkout@v3
 
