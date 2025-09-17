@@ -28,6 +28,16 @@ jobs:
         run: |
           sleep 20  # Attendre 20 secondes pour s'assurer que les services sont prêts
 
+      - name: Changement du fichier .env
+        run: |
+          echo "DB_HOST=localhost" >> .env
+          echo "MONGODB_HOST=localhost" >> .env
+          echo "DB_NAME=mydb" >> .env
+          echo "DB_USERNAME=user" >> .env
+          echo "DB_PASSWORD=pass" >> .env
+          echo "MONGO_INITDB_ROOT_USERNAME=user" >> .env
+          echo "MONGO_INITDB_ROOT_PASSWORD=pass" >> .env
+
       - name: Créer un environnement virtuel Python
         run: |
           python3 -m venv venv
