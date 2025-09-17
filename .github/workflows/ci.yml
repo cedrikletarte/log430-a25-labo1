@@ -24,4 +24,9 @@ jobs:
         run: |
           docker compose up -d --build
 
+      - name: Lancer les tests Pytest dans le conteneur
+        run: |
+          docker compose exec store_manager_app pytest
+
+
 

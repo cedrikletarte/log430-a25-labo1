@@ -226,7 +226,11 @@ class UserDAOMongo:
 
 > Comment avez-vous implémenté votre product_view.py ? Est-ce qu’il importe directement la ProductDAO ? Veuillez inclure le code pour illustrer votre réponse.
 
-Afin de respecter l'architecture MVC (Model-View-Controller), nous devons respecter le principe suivant : Model → Controller → View. Le contrôleur fait la liaison entre le modèle et le DAO, ce qui permet à la vue de rester découplée de la logique d’accès aux données. Cela signifie que la vue ne doit jamais interagir directement avec le DAO.
+Afin de respecter l'architecture MVC (Model-View-Controller), nous devons suivre le principe suivant : Model → Controller → View. Le contrôleur assure la liaison entre le modèle et le DAO, ce qui permet à la vue de rester découplée de la logique d’accès aux données. En conséquence, la vue ne doit jamais interagir directement avec le DAO.
+
+Le fichier product_view.py a été créé en suivant la même implémentation que user_view.py. Ces vues utilisent les actions que leur contrôleur respectif met à leur disposition.
+
+Par ailleurs, le fichier store_manager.py a été modifié afin de permettre aux utilisateurs de l'application de basculer facilement entre la vue produit et la vue utilisateur.
 
 ```python
 
