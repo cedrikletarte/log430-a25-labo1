@@ -10,17 +10,6 @@ jobs:
       - name: Checkout dépôt
         uses: actions/checkout@v3
 
-      - name: Créer un environnement virtuel Python
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Lancer les tests Pytest
-        run: |
-          pytest
-
       - name: Créer fichier .env
         run: |
           echo "DB_HOST=mysql" >> .env
@@ -34,5 +23,21 @@ jobs:
       - name: Lancer les services Docker
         run: |
           docker compose up -d --build
+
+      - name: Attendre que les services soient prêts
+        run: |
+          sleep 20  # Attendre 20 secondes pour s'assurer que les services sont prêts
+
+      - name: Créer un environnement virtuel Python
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lancer les tests Pytest
+        run: |
+          source venv/bin/activate
+          pytest
 
 
