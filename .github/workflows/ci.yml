@@ -12,9 +12,9 @@ jobs:
 
       - name: Créer fichier .env (Docker)
         run: |
-          echo "DB_HOST=mysql" >> .env
+          echo "MYSQL_HOST=mysql" >> .env
           echo "MONGODB_HOST=mongo" >> .env
-          echo "DB_NAME=mydb" >> .env
+          echo "MYSQL_DB_NAME=mydb" >> .env
           echo "DB_USERNAME=user" >> .env
           echo "DB_PASSWORD=pass" >> .env
           echo "MONGO_INITDB_ROOT_USERNAME=user" >> .env
@@ -43,11 +43,11 @@ jobs:
             sleep 2
           done
 
-      - name: Créer fichier .env (tests locaux)
+      - name: Créer fichier .env (local)
         run: |
-          echo "DB_HOST=localhost" > .env
+          echo "MYSQL_HOST=localhost" >> .env
           echo "MONGODB_HOST=localhost" >> .env
-          echo "DB_NAME=mydb" >> .env
+          echo "MYSQL_DB_NAME=mydb" >> .env
           echo "DB_USERNAME=user" >> .env
           echo "DB_PASSWORD=pass" >> .env
           echo "MONGO_INITDB_ROOT_USERNAME=user" >> .env
