@@ -38,6 +38,7 @@ jobs:
       - name: Lancer les tests Pytest
         run: |
           source venv/bin/activate
+          export PYTHONPATH=${PWD}/src
           pytest
 
 
