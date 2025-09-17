@@ -10,6 +10,15 @@ jobs:
       - name: Checkout dépôt
         uses: actions/checkout@v3
 
+      - name: Installer les dépendances Python
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Exécuter les tests Pytest
+        run: |
+          pytest
+
       - name: Créer fichier .env
         run: |
           echo "DB_HOST=mysql" >> .env
@@ -23,10 +32,5 @@ jobs:
       - name: Lancer les services Docker
         run: |
           docker compose up -d --build
-
-      - name: Lancer les tests Pytest dans le conteneur
-        run: |
-          docker compose exec store_manager_app pytest
-
 
 
