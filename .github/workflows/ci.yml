@@ -52,7 +52,7 @@ jobs:
           echo "DB_PASSWORD=pass" >> .env
           echo "MONGO_INITDB_ROOT_USERNAME=user" >> .env
           echo "MONGO_INITDB_ROOT_PASSWORD=pass" >> .env
-
+ 
       - name: Créer un environnement virtuel Python
         run: |
           python3 -m venv venv
