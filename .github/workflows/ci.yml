@@ -4,13 +4,13 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: self-hosted  # Utilisation du runner self-hosted
+    runs-on: self-hosted
 
     steps:
       - name: Checkout dépôt
         uses: actions/checkout@v3
 
-      - name: Créer fichier .env
+      - name: Créer fichier .env (Docker)
         run: |
           echo "DB_HOST=mysql" >> .env
           echo "MONGODB_HOST=mongo" >> .env
@@ -21,16 +21,31 @@ jobs:
           echo "MONGO_INITDB_ROOT_PASSWORD=pass" >> .env
 
       - name: Lancer les services Docker
-        run: |
-          docker compose up -d --build
+        run: docker compose up -d --build
 
-      - name: Attendre que les services soient prêts
+      - name: Attendre que MySQL et Mongo soient prêts
         run: |
-          sleep 20  # Attendre 20 secondes pour s'assurer que les services sont prêts
+          for i in {1..30}; do
+            if docker exec $(docker ps -qf "name=mongo") mongosh -u user -p pass --eval "db.adminCommand('ping')" &>/dev/null; then
+              echo "MongoDB est prêt"
+              break
+            fi
+            echo "En attente de MongoDB..."
+            sleep 2
+          done
 
-      - name: Changement du fichier .env
+          for i in {1..30}; do
+            if docker exec $(docker ps -qf "name=mysql") mysql -uuser -ppass -e "SELECT 1;" &>/dev/null; then
+              echo "MySQL est prêt"
+              break
+            fi
+            echo "En attente de MySQL..."
+            sleep 2
+          done
+
+      - name: Créer fichier .env (tests locaux)
         run: |
-          echo "DB_HOST=localhost" >> .env
+          echo "DB_HOST=localhost" > .env
           echo "MONGODB_HOST=localhost" >> .env
           echo "DB_NAME=mydb" >> .env
           echo "DB_USERNAME=user" >> .env
@@ -49,6 +64,4 @@ jobs:
         run: |
           source venv/bin/activate
           export PYTHONPATH=${PWD}/src
-          pytest
-
-
+          pytest -v
